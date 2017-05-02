@@ -37,6 +37,8 @@
       $(".final").hide();
       $("#go").on("click", function () {
 
+        $("#resultGenerateForms").empty();
+
         $("#goToGenerateModel").show();
 
         var initalContent = $("#htmlTranslateResult").val();
@@ -46,7 +48,11 @@
 
         var inputsTextsCount = content.find("input[type=text]").length;
 
-        for (var i = 0; i <= inputsTextsCount; i++) {
+          $("#resultGenerateForms").append(
+          `<h3>Input text found: ${inputsTextsCount} </h3>`
+        )
+
+        for (var i = 0; i < inputsTextsCount; i++) {
 
           var line =
             `<div class="form-group row">
@@ -71,13 +77,13 @@
           `<hr/ style=" margin-top: 1rem;margin-bottom: 1rem;border: 0;border-top: 1px solid rgba(0, 0, 0, 0.1);">`
         )
 
-        $("#resultGenerateForms").append(
-          `<h2>Checkboxs</h2>`
-        )
-
         var inputsCheckCount = content.find("input[type=checkbox]").length;
 
-        for (var i = 0; i <= inputsCheckCount; i++) {
+         $("#resultGenerateForms").append(
+          `<h3>Input checkbox Found: ${inputsCheckCount} </h3>`
+        )
+
+        for (var i = 0; i < inputsCheckCount; i++) {
 
           var line =
             `<div class="form-group row">
