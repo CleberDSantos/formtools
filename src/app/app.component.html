@@ -1,0 +1,97 @@
+<br/>
+<br/>
+<div class="container">
+  <div class="row">
+
+    <div class="form-group">
+      <label for="exampleTextarea">Input your html</label>
+      <textarea [(ngModel)]="model.htmlInitialContent" id="htmlInitialContent" name="htmlInitialContent" (change)="execute()" class="form-control"
+        cols="500" rows="20"></textarea>
+    </div>
+  </div>
+
+  <!-- Nav tabs -->
+  <ul id="myTab" class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Tools</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Model</a>
+    </li>
+
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane active" id="home" role="tabpanel">
+      <br>
+      <br>
+      <div class="row">
+        <button class="btn btn-primary" value="Translate" (click)="toTranslate()">Translate Again</button>
+        <div class="form-group">
+          <br>
+          <button class="btn btn-secondary float-right" data-clipboard-target="#jsonPropertyResult">
+            <img width="14" src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard">
+        </button>
+          <label>Json Properties</label>
+          <textarea [(ngModel)]="model.jsonPropertyResult" name="jsonPropertyResult" id="jsonPropertyResult" class="form-control" cols="500" rows="20"></textarea>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="form-group">
+          <label for="exampleTextarea">Html with translate</label>
+          <button class="btn btn-secondary float-right" data-clipboard-target="#htmlTranslateResult">
+            <img width="14" src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard">
+        </button>
+          <textarea [(ngModel)]="model.htmlTranslateResult" name="htmlTranslateResult" id="htmlTranslateResult" class="form-control"
+            cols="500" rows="20"></textarea>
+        </div>
+      </div>
+
+    </div>
+    <div class="tab-pane" id="profile" role="tabpanel">
+      <br>
+      <div class="row">
+        <div class="form-group">
+          <button id="go" class="btn btn-primary">Let's Go!</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="htmlContentHide" style="width: 100%">
+        </div>
+        <div id="resultGenerateForms" style="width: 100%">
+
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <button style="display:none" id="goToGenerateModel" class="btn btn-primary">Generate Model</button>
+      </div>
+      <br>
+      <div id="modelGenerated" class="row" style="display:none">
+        <div class="form-group">
+          <label>Model Generate</label>
+          <button class="btn btn-secondary float-right" data-clipboard-target="#modelGenerateResult">
+            <img width="14" src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard">
+        </button>
+          <textarea [(ngModel)]="model.modelGenerateResult" name="modelGenerateResult" id="modelGenerateResult" class="form-control"
+            cols="500" rows="20"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <hr style=" margin-top: 1rem;margin-bottom: 1rem;border: 0;border-top: 1px solid rgba(0, 0, 0, 0.1);">
+  <div class="row final">
+    <div class="form-group">
+      <label for="exampleTextarea"><b>Final HTML</b></label>
+      <button class="btn btn-secondary float-right" data-clipboard-target="#finalHtml">
+            <img width="14" src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard">
+        </button>
+      <textarea [(ngModel)]="model.finalHtml" name="finalHtml" id="finalHtml" class="form-control" cols="500" rows="20"></textarea>
+      <code>teste</code>
+    </div>
+  </div>
+</div>

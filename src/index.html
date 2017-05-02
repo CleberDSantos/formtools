@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Formtools</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
+  <script>
+
+
+    $(document).ready(function () {
+      
+      new Clipboard('.btn');
+      
+      $('#myTab a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
+
+       $('#myTab2 a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
+
+      $(".final").hide();
+      $("#go").on("click", function () {
+
+        $("#goToGenerateModel").show();
+
+        var initalContent = $("#htmlTranslateResult").val();
+        var content = $("#htmlContentHide");
+        content.hide();
+        content.append(initalContent);
+
+        var inputsTextsCount = content.find("input[type=text]").length;
+
+        for (var i = 0; i <= inputsTextsCount; i++) {
+
+          var line =
+            `<div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label">Propertie ${i}</label>
+            <div class="col-5">
+              <input class="form-control generated" name="questionText${i}" id="questionText${i}" type="text" value="">
+            </div>
+            <div class="col-5">
+              <div class="form-check">
+                <label class="form-check-label">
+                <input class="form-check-input generated" name="questionTextCheck${i}" id="questionTextCheck${i}" type="checkbox" checked="checked"> Is currency
+              </label>
+              </div>
+            </div>
+          </div>`;
+
+          $("#resultGenerateForms").append(line);
+
+        }
+
+        $("#resultGenerateForms").append(
+          `<hr/ style=" margin-top: 1rem;margin-bottom: 1rem;border: 0;border-top: 1px solid rgba(0, 0, 0, 0.1);">`
+        )
+
+        $("#resultGenerateForms").append(
+          `<h2>Checkboxs</h2>`
+        )
+
+        var inputsCheckCount = content.find("input[type=checkbox]").length;
+
+        for (var i = 0; i <= inputsCheckCount; i++) {
+
+          var line =
+            `<div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label">Propertie ${i}</label>
+            <div class="col-5">
+              <input class="form-control generated" name="questionCheckbox${i}" id="questionCheckbox${i}" type="text" value="">
+            </div>
+          </div>`;
+
+          $("#resultGenerateForms").append(line);
+
+        }
+
+      });
+
+      $("#goToGenerateModel").hide();
+      $("#modelGenerated").show();
+      
+
+      $("#goToGenerateModel").on("click", function () {
+
+
+        var initalContent = $("#htmlTranslateResult").val();
+        var content = $("#htmlContentHide");
+        content.hide();
+        content.append(initalContent);
+
+        var headClass = `export class ModelSample extends ApplicationModel {`;
+
+        var middleClass = ``;
+
+        var footerClass = `\n \n constructor() {
+
+        super();
+     
+
+            }
+        }`;
+
+        var inputTextTemplate = ``;
+        var inputsTexts = content.find("input[type=text]");
+        var inputsChecks = content.find("input[type=checkbox]");
+
+        $(".generated[name*=questionCheckbox]").each(function (index, input) {
+
+          var lastChar = input.id.slice(-1);;
+          var isCheck = $("#questionTextCheck" + lastChar).is(":checked");
+          var value = input.value;
+
+          middleClass = `\n public ${value}: string; //${index}`
+
+          if (index == 0) {
+            headClass += "\n" + middleClass;
+          } else {
+            headClass += middleClass;
+          }
+          debugger
+          if (inputsChecks.length > 0) {
+            inputTextTemplate =
+              `<input id="${value}" name="${value}" [(ngModel)]="model.Form.${value}" type="checkbox" unchecked="" />`;
+            var before = inputsChecks[index].outerHTML;
+            before = before.replace(">", " />");
+
+            initalContent = initalContent.replace(new RegExp(before, 'g'), inputTextTemplate)
+          }
+
+        });
+
+        $(".generated[name*=questionText][type=text]").each(function (index, input) {
+
+          var lastChar = input.id.slice(-1);;
+          var isCheck = $("#questionTextCheck" + lastChar).is(":checked");
+          var value = input.value;
+
+          if (isCheck) {
+            middleClass = `\n public ${value}: number;`
+            inputTextTemplate =
+              `<input id="${value}" name="${value}" [(ngModel)]="model.Form.${value}" class="form-control currency" size="16" type="text" currencyMask placeholder="0.00 />"`;
+          } else {
+            middleClass = `\n public ${value}: string;`
+            inputTextTemplate =
+              `<input id="${value}" name="${value}" [(ngModel)]="model.Form.${value}" class="form-control" size="16" type="text" placeholder="Text" />`;
+          }
+
+          if (index == 0) {
+            headClass += "\n" + middleClass;
+          } else {
+            headClass += middleClass;
+          }
+
+          if (inputsTexts.length > 0) {
+
+
+            var before = inputsTexts[index].outerHTML;
+            before = before.replace(">", " />");
+
+            initalContent = initalContent.replace(new RegExp(before, 'g'), inputTextTemplate)
+
+          }
+
+        });
+
+        $("#modelGenerateResult").val(headClass + footerClass);
+        $("#finalHtml").val(initalContent);
+        $(".final").show();
+      });
+
+
+
+    })
+
+  </script>
+
+</head>
+
+<body>
+  <app-root>Loading...</app-root>
+</body>
+
+</html>
